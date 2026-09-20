@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     qdrant_collection: str = "engineering_knowledge"
     embedding_dimension: int = 768
     knowledge_dir: str = ""
+    work_items_db_path: str = "work_items.db"
 
 
 @lru_cache

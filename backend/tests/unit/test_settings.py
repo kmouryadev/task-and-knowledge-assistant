@@ -47,3 +47,15 @@ def test_settings_rag_reads_env(monkeypatch):
 
     assert settings.gemini_api_key == "test-key-123"
     assert settings.qdrant_url == "http://qdrant:6333"
+
+
+def test_settings_work_items_db_path_default(monkeypatch):
+    monkeypatch.delenv("WORK_ITEMS_DB_PATH", raising=False)
+    get_settings.cache_clear()
+    assert get_settings().work_items_db_path == "work_items.db"
+
+
+def test_settings_work_items_db_path_reads_env(monkeypatch):
+    monkeypatch.setenv("WORK_ITEMS_DB_PATH", "/data/items.db")
+    get_settings.cache_clear()
+    assert get_settings().work_items_db_path == "/data/items.db"
