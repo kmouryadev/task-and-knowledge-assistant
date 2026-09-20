@@ -23,3 +23,27 @@ def test_settings_reads_env(monkeypatch):
 
     assert settings.environment == "production"
     assert settings.agent_enabled is False
+
+
+def test_settings_rag_defaults(monkeypatch):
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("QDRANT_URL", raising=False)
+    get_settings.cache_clear()
+
+    settings = get_settings()
+
+    assert settings.gemini_api_key == ""
+    assert settings.qdrant_url == "http://localhost:6333"
+    assert settings.qdrant_collection == "engineering_knowledge"
+    assert settings.embedding_dimension == 768
+
+
+def test_settings_rag_reads_env(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key-123")
+    monkeypatch.setenv("QDRANT_URL", "http://qdrant:6333")
+    get_settings.cache_clear()
+
+    settings = get_settings()
+
+    assert settings.gemini_api_key == "test-key-123"
+    assert settings.qdrant_url == "http://qdrant:6333"

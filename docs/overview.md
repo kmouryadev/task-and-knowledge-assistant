@@ -21,11 +21,13 @@ prompt injection and tool abuse.
 
 ## Running locally
 
-Phase 1 (current):
+Set `GEMINI_API_KEY` in a local `.env` file at the repo root first (get a free
+key from Google AI Studio — never commit this file).
 
 ```bash
 docker compose up --build
-curl http://localhost:8000/health
+curl -X POST http://localhost:8000/ingest
+curl "http://localhost:8000/search?q=why+was+checkout+slow"
 ```
 
 Backend dev loop without Docker:
@@ -43,4 +45,4 @@ cd backend
 pytest tests -v
 ```
 
-This section grows as later phases add ingestion, the agent, and the frontend.
+This section grows as later phases add tools, the agent, and the frontend.

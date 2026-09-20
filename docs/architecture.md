@@ -55,6 +55,9 @@ security layer enforces and Phase 4's security tests verify.
 
 ## Current status
 
-Phase 1 (Foundation) complete: FastAPI app, settings, structured logging, typed
-errors, `/health`, Docker, CI. No RAG, tools, agent, or frontend yet — those arrive in
-Phases 2–6.
+Phase 2 (Qdrant RAG) complete, in addition to Phase 1: markdown notes in
+`knowledge/` are chunked (heading-aware, with overlap), embedded via Gemini,
+and indexed into a local Qdrant collection with `project`/`type`/`source`/
+`section` metadata. `POST /ingest` re-indexes the corpus; `GET /search`
+returns ranked, cited chunks. No agent, tools, security layer, or frontend
+yet — those arrive in Phases 3–6.
