@@ -52,14 +52,17 @@ class KnowledgeStore:
         hits = self._client.query_points(
             collection_name=self._collection_name, query=query_vector, limit=limit
         ).points
-        return [
-            SearchResult(
-                content=hit.payload["content"],
-                section=hit.payload.get("section"),
-                project=hit.payload["project"],
-                type=hit.payload["type"],
-                source=hit.payload["source"],
-                score=hit.score,
+        results = []
+        for hit in hits:
+            payload = hit.payload or {}
+            results.append(
+                SearchResult(
+                    content=payload["content"],
+                    section=payload.get("section"),
+                    project=payload["project"],
+                    type=payload["type"],
+                    source=payload["source"],
+                    score=hit.score,
+                )
             )
-            for hit in hits
-        ]
+        return results

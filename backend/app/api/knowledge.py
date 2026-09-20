@@ -1,0 +1,32 @@
+from pathlib import Path
+
+from fastapi import APIRouter, Depends
+
+from app.rag.embeddings import EmbeddingClient
+from app.rag.ingestion import IngestionReport, ingest_knowledge_base
+from app.rag.qdrant import KnowledgeStore
+from app.services.rag_service import get_embedding_client, get_knowledge_store
+
+router = APIRouter()
+
+KNOWLEDGE_DIR = Path(__file__).resolve().parents[3] / "knowledge"
+
+
+@router.post("/ingest", response_model=IngestionReport)
+def ingest(
+    store: KnowledgeStore = Depends(get_knowledge_store),
+    embedder: EmbeddingClient = Depends(get_embedding_client),
+) -> IngestionReport:
+    return ingest_knowledge_base(KNOWLEDGE_DIR, store=store, embedder=embedder)
+
+
+@router.get("/search")
+def search(
+    q: str,
+    limit: int = 5,
+    store: KnowledgeStore = Depends(get_knowledge_store),
+    embedder: EmbeddingClient = Depends(get_embedding_client),
+) -> dict:
+    query_vector = embedder.embed_query(q)
+    results = store.search(query_vector=query_vector, limit=limit)
+    return {"query": q, "results": [r.model_dump() for r in results]}
