@@ -55,9 +55,11 @@ security layer enforces and Phase 4's security tests verify.
 
 ## Current status
 
-Phase 2 (Qdrant RAG) complete, in addition to Phase 1: markdown notes in
-`knowledge/` are chunked (heading-aware, with overlap), embedded via Gemini,
-and indexed into a local Qdrant collection with `project`/`type`/`source`/
-`section` metadata. `POST /ingest` re-indexes the corpus; `GET /search`
-returns ranked, cited chunks. No agent, tools, security layer, or frontend
-yet — those arrive in Phases 3–6.
+Phase 3 (Tools) complete, in addition to Phases 1–2: a Work Items tool
+(`backend/app/tools/work_items.py`, SQLite-backed CRUD, permission-tagged
+READ/WRITE/DESTRUCTIVE) and a Web Research tool
+(`backend/app/tools/web.py`, DuckDuckGo search, search-only — no URL fetching,
+so no SSRF surface). The GitHub tool is deferred (ADR 0006). Neither tool is
+wired into a registry, permission engine, or the agent yet — both are built
+and tested standalone, per the build plan's phase ordering. Those come in
+Phase 4 (security layer) and Phase 5 (LangGraph agent).
