@@ -10,7 +10,9 @@ from app.rag.qdrant import KnowledgeStore
 @lru_cache
 def get_embedding_client() -> EmbeddingClient:
     settings = get_settings()
-    return EmbeddingClient(api_key=settings.gemini_api_key)
+    return EmbeddingClient(
+        api_key=settings.gemini_api_key, output_dimensionality=settings.embedding_dimension
+    )
 
 
 @lru_cache

@@ -15,6 +15,7 @@ def test_embed_texts_calls_gemini_per_text_and_returns_vectors():
     assert mock_embed.call_count == 2
     _, kwargs = mock_embed.call_args
     assert kwargs["task_type"] == "retrieval_document"
+    assert kwargs["output_dimensionality"] == 768
 
 
 def test_embed_query_uses_retrieval_query_task_type():

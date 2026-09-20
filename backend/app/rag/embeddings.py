@@ -1,11 +1,12 @@
 import google.generativeai as genai
 
-_MODEL = "models/text-embedding-004"
+_MODEL = "models/gemini-embedding-001"
 
 
 class EmbeddingClient:
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, output_dimensionality: int = 768):
         self._api_key = api_key
+        self._output_dimensionality = output_dimensionality
         genai.configure(api_key=api_key)
 
     def embed_texts(
@@ -14,7 +15,12 @@ class EmbeddingClient:
         if not texts:
             raise ValueError("texts must not be empty")
         return [
-            genai.embed_content(model=_MODEL, content=text, task_type=task_type)["embedding"]
+            genai.embed_content(
+                model=_MODEL,
+                content=text,
+                task_type=task_type,
+                output_dimensionality=self._output_dimensionality,
+            )["embedding"]
             for text in texts
         ]
 

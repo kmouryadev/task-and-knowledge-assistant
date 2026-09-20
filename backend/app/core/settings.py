@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     qdrant_url: str = "http://localhost:6333"
     qdrant_collection: str = "engineering_knowledge"
     embedding_dimension: int = 768
+    knowledge_dir: str = ""
 
 
 @lru_cache
